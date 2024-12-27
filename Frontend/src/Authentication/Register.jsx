@@ -64,7 +64,7 @@ function Register() {
           name="username"
           value={data.username}
           placeholder="username"
-          className="mb-4 p-2 w-full border border-gray-500 rounded text-black"
+          className="mb-4 p-2 w-full border border-gray-500 rounded bg-gray-700"
           onChange={handleChange}
         />
         <input
@@ -72,7 +72,7 @@ function Register() {
           name="fullname"
           value={data.fullname}
           placeholder="fullname"
-          className="mb-4 p-2 w-full border border-gray-500 rounded text-black"
+          className="mb-4 p-2 w-full border border-gray-500 rounded bg-gray-700"
           onChange={handleChange}
         />
         <input
@@ -80,7 +80,7 @@ function Register() {
           name="email"
           value={data.email}
           placeholder="email"
-          className="mb-4 p-2 w-full border border-gray-500 rounded text-black"
+          className="mb-4 p-2 w-full border border-gray-500 rounded bg-gray-700"
           onChange={handleChange}
         />
         <input
@@ -88,7 +88,7 @@ function Register() {
           name="password"
           value={data.password}
           placeholder="password"
-          className="mb-4 p-2 w-full border border-gray-500 rounded text-black"
+          className="mb-4 p-2 w-full border border-gray-500 rounded bg-gray-700"
           onChange={handleChange}
         />
 

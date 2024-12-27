@@ -52,7 +52,7 @@ function Login() {
           name="username"
           type="text"
           placeholder="Username..."
-          className="mb-4 p-2 w-full border border-gray-500 rounded text-black"
+          className="mb-4 p-2 w-full border border-gray-500 rounded bg-gray-700"
           onChange={handleChange}
           value={data.username}
           required
@@ -61,7 +61,7 @@ function Login() {
           name="password"
           type="password"
           placeholder="Password"
-          className="mb-4 p-2 w-full border border-gray-300 rounded text-black"
+          className="mb-4 p-2 w-full border border-gray-300 rounded bg-gray-700"
           onChange={handleChange}
           value={data.password}
           required
