@@ -1,8 +1,8 @@
-import { Itinerary } from "../model/itinerary.model";
-import { User } from "../model/user.model";
-import { apiError } from "../utils/apiError";
-import { apiResponse } from "../utils/apiResponse";
-import { asyncHandler } from "../utils/asyncHandler";
+import { Itinerary } from "../model/itinerary.model.js";
+import { User } from "../model/user.model.js";
+import { apiError } from "../utils/apiError.js";
+import { apiResponse } from "../utils/apiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const updateItinerary = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user?._id)
@@ -32,8 +32,22 @@ const updateItinerary = asyncHandler(async (req, res) => {
         )
 })
 
+const searchLocation = asyncHandler(async (req, res) => {
+
+    const { location } = req.body
+
+    const itinerary = await Itinerary.find({
+        destination: location
+    })
+
+    return res
+    .status(200)
+    .json(200, itinerary, 'location is searched successfully')
+})
+
 export {
     updateItinerary,
+    searchLocation,
 }
 
 /**

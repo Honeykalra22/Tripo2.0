@@ -16,4 +16,7 @@ app.use(express.urlencoded({ extended: true, limit: '128kb' }))
 import userRouter from './routes/user.route.js'
 app.use('/api/v2/user', userRouter)
 
+import itineraryRouter from './routes/itinerary.route.js'
+app.use('/api/v2/itinerary', itineraryRouter)
+
 export { app }
