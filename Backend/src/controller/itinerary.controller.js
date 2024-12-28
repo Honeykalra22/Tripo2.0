@@ -40,6 +40,10 @@ const searchLocation = asyncHandler(async (req, res) => {
         destination: location
     })
 
+    if(!itinerary) {
+        throw new apiError(404, 'This Place is not found')
+    }
+
     return res
     .status(200)
     .json(200, itinerary, 'location is searched successfully')
