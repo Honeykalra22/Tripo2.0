@@ -21,7 +21,4 @@ import itineraryRouter from './routes/itinerary.route.js'
 app.use('/api/v2/user', userRouter)
 app.use('/api/v2/itinerary', itineraryRouter)
 
-import itineraryRouter from './routes/itinerary.route.js'
-app.use('/api/v2/itinerary', itineraryRouter)
-
 export { app }
