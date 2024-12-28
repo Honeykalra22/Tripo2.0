@@ -3,32 +3,37 @@ import { User } from "../model/user.model.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import fetchItineraryFromChatGPT from "../db/openai.config.js";
 
 const updateItinerary = asyncHandler(async (req, res) => {
+    const {  prompt } = req.body;
     const user = await User.findById(req.user?._id)
     if (!user) {
         throw new apiError(404, 'User is not found')
     }
 
-    const { destination, activities, budget, startDate, endDate, description } = req.body
+     const itineraryData = await fetchItineraryFromChatGPT(prompt);
+     if (!prompt) {
+        throw new apiError(400, 'Prompt is required');
+    }
 
-    const itinerary = new Itinerary({
-        user: user._id,
-        destination,
-        activities,
-        budget,
-        startDate,
-        endDate,
-        description,
-    })
+    const newItinerary = new Itinerary({
+            user,
+            destination: itineraryData.destination,
+            activities: itineraryData.activities,
+            budget: itineraryData.budget,
+            startDate: new Date(itineraryData.startDate),
+            endDate: new Date(itineraryData.endDate),
+            description: itineraryData.description,
+    });
 
-    await itinerary.save()
+    await newItinerary.save()
 
     return res
         .status(200)
         .json(
             200,
-            new apiResponse(200, itinerary, 'Itinarary updated successfully')
+            new apiResponse(200, newItinerary, 'Itinarary updated successfully')
         )
 })
 
