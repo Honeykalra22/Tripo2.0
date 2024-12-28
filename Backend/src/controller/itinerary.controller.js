@@ -4,7 +4,6 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import fetchItineraryFromChatGPT from "../db/openai.config.js";
-import { Itinerary } from "./models/itineraryModel.js"; 
 
 const updateItinerary = asyncHandler(async (req, res) => {
     const {  prompt } = req.body;
@@ -38,8 +37,26 @@ const updateItinerary = asyncHandler(async (req, res) => {
         )
 })
 
+const searchLocation = asyncHandler(async (req, res) => {
+
+    const { location } = req.body
+
+    const itinerary = await Itinerary.find({
+        destination: location
+    })
+
+    if(!itinerary) {
+        throw new apiError(404, 'This Place is not found')
+    }
+
+    return res
+    .status(200)
+    .json(200, itinerary, 'location is searched successfully')
+})
+
 export {
     updateItinerary,
+    searchLocation,
 }
 
 /**

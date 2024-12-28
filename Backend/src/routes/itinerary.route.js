@@ -1,11 +1,14 @@
-import express from "express";
-import { upload } from "../middleware/multer.middleware.js";
+import { Router } from "express";
+import { updateItinerary } from "../controller/itinerary.controller.js";
+import { searchLocation } from "../controller/itinerary.controller.js";
 import { verifyJwt } from "../middleware/auth.middleware.js";
+import { upload } from "../middleware/multer.middleware.js";
 
-const router = express.Router();
+const router = .Router();
 router.use(upload.none());
 router.use(verifyJwt);
 
-router.post("/autofill-itinerary" )
+router.route('/updateItinerary').post(verifyJwt, updateItinerary)
+router.route('/searchLocation').post(verifyJwt, searchLocation)
 
-export default router;
+export default router
