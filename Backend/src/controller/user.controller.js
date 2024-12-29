@@ -48,8 +48,6 @@ const registerUser = asyncHandler(async (req, res) => {
         username,
         email,
         password,
-        age,
-        mobile_no,
     })
 
     const createdUser = await User.findById(user._id).select(
