@@ -33,7 +33,6 @@ const userSchema = new mongoose.Schema({
     },
     mobile_no: {
         type: String,
-        unique: true
     },
     refreshToken: {
         type: String,
