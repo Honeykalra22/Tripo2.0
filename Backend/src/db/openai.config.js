@@ -1,14 +1,11 @@
-import { Configuration, OpenAIApi } from 'openai';
+import OpneAI from 'openai';
 
-const configuration = new Configuration({
+const openai = new OpneAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
-
 const getRecommendation = async (userInput) => {
     try {
-        const response = await openai.createChatCompletion({
+        const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
             messages: [
                 {
