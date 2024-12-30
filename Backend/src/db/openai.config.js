@@ -1,8 +1,10 @@
 import OpneAI from 'openai';
 
-const openai = new OpneAI({
-    apiKey: process.env.OPENAI_API_KEY,
+
+const openai = new OpenAI({
+     apiKey: process.env.OPENAI_API_KEY
 });
+
 const getRecommendation = async (userInput) => {
     try {
         const response = await openai.chat.completions.create({
@@ -13,9 +15,13 @@ const getRecommendation = async (userInput) => {
                     content: userInput,
                 },
             ],
+            max_tokens: 200,
+            temperature: 0.7,
         });
-        console.log(response.data.choices[0].message.content);
-        return response.data.choices[0].message.content;
+        const content = response.data.choices[0].message.content;
+
+        console.log(content);
+        return JSON.parse(content);
     } catch (error) {
         console.error('Error fetching recommendation:', error.response?.data || error.message);
         throw error;

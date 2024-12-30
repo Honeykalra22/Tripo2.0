@@ -6,11 +6,30 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+.env
+.env.*.local
+
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+*.tmp
+
+
+# Test files
+/coverage/
+/.nyc_output/
+*.test.js
+*.spec.js
+
+# Git-specific files
+!.gitignore
 
 node_modules
 dist
 dist-ssr
 *.local
+
 
 # Editor directories and files
 .vscode/*
