@@ -1,10 +1,11 @@
-import axios from 'axios';
-import React, { useContext, useState } from 'react';
-import { UserContext } from '../Context/UserContext';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '../store/Slices/auth.slice.js';
+import Loading from '../Components/Loading.jsx';
 
 function Login() {
-  const url = useContext(UserContext);
+  
   const [message, setMessage] = useState('');
   const [error, setError] = useState(false);
   const [data, setData] = useState({
@@ -12,18 +13,18 @@ function Login() {
     password: '',
   });
 
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.auth?.loading);
+
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent form reload
+    e.preventDefault(); 
     try {
-      const response = await axios.post(`${url}/user/login`, data);
-      const token = response.data.data.accessToken;
-
-      if (token) {
-        localStorage.setItem('accessToken', token);
+      const response = await dispatch(loginUser(data));
+      if(response?.payload) {
         setError(false);
-        setMessage('User is logged in successfully');
+        setMessage(response.payload.message);
         navigate('/');
       }
     } catch (err) {
@@ -39,7 +40,7 @@ function Login() {
       [e.target.name]: e.target.value,
     });
   };
-
+  if(loading) return <Loading/>
   return (
     <div className="flex flex-col items-center justify-center text-center min-h-screen bg-gray-800">
       <form
