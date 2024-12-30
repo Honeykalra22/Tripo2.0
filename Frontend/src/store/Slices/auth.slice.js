@@ -101,7 +101,7 @@ export const updateAvatar = createAsyncThunk(
 export const getResultFromChatGPT = createAsyncThunk(
     "checklist",
     asyncHandler(async (data) => {
-        const response = await axios.post("/itinerary/getResultFromChatGPT", data)
+        const response = await axiosInstance.post("/itinerary/getResultFromChatGPT", data)
         console.log(response.data);
         toast.success('Check List is Updated')
         return response.data;
