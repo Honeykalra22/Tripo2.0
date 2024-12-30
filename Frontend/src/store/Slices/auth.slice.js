@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import asyncHandler from "../sliceUtils/asyncHandler.js"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from 'axios'
 
 const initialState = {
     userdata: null,
@@ -79,10 +80,10 @@ export const updateAvatar = createAsyncThunk(
         const formData = new FormData();
         formData.append("Avatar", data.avatar[0]);
 
-        const response = await axios.post("/user/updateAvatar" ,formData,{
+        const response = await axios.post("/user/updateAvatar", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
-              },
+            },
         });
 
         console.log(response.data);
@@ -91,8 +92,18 @@ export const updateAvatar = createAsyncThunk(
     })
 )
 
+export const getResultFromChatGPT = createAsyncThunk(
+    "checklist",
+    asyncHandler(async (data) => {
+        const response = await axios.post("/itinerary/getResultFromChatGPT", data)
+        console.log(response.data);
+        toast.success('Check List is Updated')
+        return response.data;
+    })
+)
+
 const authSlice = createSlice({
-    initialState, 
+    initialState,
     name: "auth",
     reducers: {},
     extraReducers: (builder) => {
@@ -155,6 +166,13 @@ const authSlice = createSlice({
             state.userdata = action.payload;
         })
         builder.addCase(updateAvatar.rejected, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(getResultFromChatGPT.fulfilled, (state, action) => {
+            state.loading = false;
+            state.userdata = action.payload;
+        })
+        builder.addCase(getResultFromChatGPT.rejected, (state) => {
             state.loading = false;
         })
     }
