@@ -9,22 +9,13 @@ lerna-debug.log*
 .env
 .env.*.local
 
-# Build output
-/dist/
-/build/
-/.out/
 
-# Temporary files
 *.swp
 *.swo
 *.DS_Store
 Thumbs.db
 *.tmp
 
-# IDE files
-.vscode/
-.idea/
-*.iml
 
 # Test files
 /coverage/
