@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import asyncHandler from "../sliceUtils/asyncHandler.js"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axiosInstance from "../../utilities/axios.js";
 
 const initialState = {
     userdata: null,
@@ -16,9 +17,14 @@ export const registerUser = createAsyncThunk(
         formData.append("password", data.password);
         formData.append("username", data.username);
         formData.append("fullname", data.fullname);
+        formData.append("mobile_no", data.mobile_no);
 
-        const response = await axios.post("/user/register", formData);
-        console.log(response.data);
+        const response = await axiosInstance.post("/user/register", formData , {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        console.log("data" ,response.data);
         toast.success("Sign Up Successful");
         return response.data;
     })
@@ -27,7 +33,8 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
     "login",
     asyncHandler(async (data) => {
-        const response = await axios.post("/user/login", data);
+        console.log(data);
+        const response = await axiosInstance.post("/user/login", data);
         console.log(response.data);
         toast.success("Login Successful");
         return response.data.data?.user;
@@ -37,7 +44,7 @@ export const loginUser = createAsyncThunk(
 export const logoutUser = createAsyncThunk(
     "logout",
     asyncHandler(async () => {
-        const response = await axios.post("/user/logout");
+        const response = await axiosInstance.post("/user/logout");
         console.log(response.data);
         toast.success("Logout Successful");
         return response.data;
@@ -47,7 +54,7 @@ export const logoutUser = createAsyncThunk(
 export const updateProfile = createAsyncThunk(
     "updateUser",
     asyncHandler(async (data) => {
-        const response = await axios.patch("/user/updateprofile", data);
+        const response = await axiosInstance.patch("/user/updateprofile", data);
         console.log(response.data);
         toast.success("Profile Updated");
         return response.data;
@@ -57,7 +64,7 @@ export const updateProfile = createAsyncThunk(
 export const getCurrentUser = createAsyncThunk(
     "getCurrentUser",
     asyncHandler(async () => {
-        const response = await axios.get("/user/getCurrentUser");
+        const response = await axiosInstance.get("/user/getCurrentUser");
         console.log(response.data);
         return response.data.data;
     })
@@ -66,7 +73,7 @@ export const getCurrentUser = createAsyncThunk(
 export const updatePassword = createAsyncThunk(
     "newPassword",
     asyncHandler(async (data) => {
-        const response = await axios.patch("/user/updatePassword", data);
+        const response = await axiosInstance.patch("/user/updatePassword", data);
         console.log(response.data);
         toast.success("Password Updated");
         return response.data;
@@ -79,7 +86,7 @@ export const updateAvatar = createAsyncThunk(
         const formData = new FormData();
         formData.append("Avatar", data.avatar[0]);
 
-        const response = await axios.post("/user/updateAvatar" ,formData,{
+        const response = await axiosInstance.post("/user/updateAvatar" ,formData,{
             headers: {
                 "Content-Type": "multipart/form-data",
               },
@@ -105,6 +112,7 @@ const authSlice = createSlice({
         })
         builder.addCase(registerUser.rejected, (state) => {
             state.loading = false;
+            toast.error("Sign Up Failed");
         })
 
         builder.addCase(loginUser.pending, (state) => {

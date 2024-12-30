@@ -4,7 +4,7 @@ import Footer from './Components/Footer'
 import Home from './Pages/Home'
 import Login from './Authentication/Login'
 import Register from './Authentication/Register'
-
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
@@ -17,7 +17,20 @@ function App() {
           <Route path='/register' element = {<Register/>} />
         </Routes>
         <Footer/>
-      </Router>
+        </Router>
+      <Toaster
+        position="top-center"
+        reverseOrder={true}
+        toastOptions={{
+          error: {
+            style: { borderRadius: "0", color: "red" },
+          },
+          success: {
+            style: { borderRadius: "0", color: "green" },
+          },
+          duration: 2500,
+        }}
+      />
     </div>
   )
 }

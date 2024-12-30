@@ -18,7 +18,7 @@ const updateItinerary = asyncHandler(async (req, res) => {
     }
 
     const newItinerary = new Itinerary({
-            user,
+            user: req.user._id,
             destination: itineraryData.destination,
             activities: itineraryData.activities,
             budget: itineraryData.budget,
@@ -32,10 +32,28 @@ const updateItinerary = asyncHandler(async (req, res) => {
     return res
         .status(200)
         .json(
-            200,
             new apiResponse(200, newItinerary, 'Itinarary updated successfully')
         )
 })
+
+const getUserItineraries = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user?._id)
+    if (!user) {
+        throw new apiError(404, 'User not found');
+    }
+    const itineraries = await Itinerary.find({ user: req.user._id });
+
+    if(itineraries?.length === 0) {
+        throw new apiError(404, 'No itinerary found');
+    }
+
+    return res
+        .status(200)
+        .json(
+            new apiResponse(200, itineraries, 'Itineraries fetched successfully')
+        )
+})
+
 
 const searchLocation = asyncHandler(async (req, res) => {
 
@@ -51,12 +69,13 @@ const searchLocation = asyncHandler(async (req, res) => {
 
     return res
     .status(200)
-    .json(200, itinerary, 'location is searched successfully')
+    .json(new apiResponse(200, itinerary, 'location is searched successfully'))
 })
 
 export {
     updateItinerary,
     searchLocation,
+    getUserItineraries
 }
 
 /**

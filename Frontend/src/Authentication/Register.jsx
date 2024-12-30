@@ -1,10 +1,15 @@
 import React, { useContext, useState } from 'react';
-import { UserContext } from '../Context/UserContext';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, registerUser } from '../store/Slices/auth.slice.js';
+import Loading from '../Components/Loading.jsx';
 
 function Register() {
-  const url = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const loading = useSelector(state => state.auth?.loading);
+  const dispatch = useDispatch();
+
   const [message, setMessage] = useState('');
   const [error, setError] = useState(false);
   const [data, setData] = useState({
@@ -12,35 +17,32 @@ function Register() {
     fullname: '',
     email: '',
     password: '',
+    mobile_no: '',
   });
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    if (!data.username || !data.fullname || !data.email || !data.password) {
+    if (!data.username || !data.fullname || !data.email || !data.password || !data.mobile_no) {
       setMessage('All fields are required');
       setError(true);
       return;
-    }
+    }     
+    const response = await dispatch(registerUser(data));
 
-    const formData = new FormData();
-    formData.append('username', data.username);
-    formData.append('fullname', data.fullname);
-    formData.append('email', data.email);
-    formData.append('password', data.password);
-
-    try {
-      const response = await axios.post(`${url}/user/register`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      setMessage('User is registered successfully');
-      setError(false);
-      setData({ username: '', fullname: '', email: '', password: '' });
-    } catch (error) {
-      console.error('Registration error:', error);
-      setError(true);
-      setMessage(error.response?.data?.data?.message || 'Something went wrong');
+    if(response?.payload) {
+      setMessage(response.payload.message);
+      const username = data?.username;
+      const password = data?.password;
+      const login = await dispatch(loginUser({ username, password }));
+  
+      if(login?.payload) {
+        setError(false);
+        
+        navigate('/');
+      }
+      else {
+          navigate('/login');
+        }
     }
   };
 
@@ -50,7 +52,7 @@ function Register() {
       [e.target.name]: e.target.value,
     });
   };
-
+  if(loading) return <Loading/>
   return (
     <div className="flex flex-col items-center text-center gap-10 justify-center min-h-screen bg-gray-800">
       <form
@@ -80,6 +82,14 @@ function Register() {
           name="email"
           value={data.email}
           placeholder="email"
+          className="mb-4 p-2 w-full border border-gray-500 rounded bg-gray-700"
+          onChange={handleChange}
+        />
+        <input
+          type="mobile_no"
+          name="mobile_no"
+          value={data.mobile_no}
+          placeholder="mobile number"
           className="mb-4 p-2 w-full border border-gray-500 rounded bg-gray-700"
           onChange={handleChange}
         />

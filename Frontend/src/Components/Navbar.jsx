@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import logo from '../../public/logo.png';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
 import axios from 'axios';
@@ -39,7 +38,7 @@ function Navbar() {
       {/* Logo */}
       <Link to="/">
         <div className="items-center flex flex-col">
-          <img src={logo} alt="Logo" className="h-12 w-12" />
+          <img src="/logo.png" alt="Logo" className="h-12 w-12" />
           <p className="text-[9px]">TRIPO: A new way to trip</p>
         </div>
       </Link>

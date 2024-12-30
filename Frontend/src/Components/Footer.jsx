@@ -1,5 +1,4 @@
 import React from 'react'
-import logo from '../../public/logo.png'
 import { Link } from 'react-router-dom'
 
 function Footer() {
@@ -8,7 +7,7 @@ function Footer() {
       <div className="container mx-auto px-6 grid grid-cols-2 md:grid-cols-3 gap-8 items-center">
         <Link to='/'>
           <div className='item-center flex flex-col'>
-            <img src={logo} alt="" className='h-24 w-24' />
+            <img src="/logo.png" alt="" className='h-24 w-24' />
             <p className='text-[16px]'>TRIPO: A new way to trip</p>
           </div>
         </Link>
