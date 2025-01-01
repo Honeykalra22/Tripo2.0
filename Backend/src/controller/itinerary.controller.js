@@ -5,9 +5,14 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import fetchItineraryFromChatGPT from "../db/openai.config.js";
+import { isValidObjectId } from "mongoose";
 
 const updateItinerary = asyncHandler(async (req, res) => {
     const {  prompt } = req.body;
+    if(!isValidObjectId(req.user?._id)) {
+        throw new apiError(400, 'Invalid user id');
+    }
+
     const user = await User.findById(req.user?._id)
     if (!user) {
         throw new apiError(404, 'User is not found')
@@ -38,6 +43,10 @@ const updateItinerary = asyncHandler(async (req, res) => {
 })
 
 const getUserItineraries = asyncHandler(async (req, res) => {
+    if(!isValidObjectId(req.user?._id)) {
+        throw new apiError(400, 'Invalid user id');
+    }
+
     const user = await User.findById(req.user?._id)
     if (!user) {
         throw new apiError(404, 'User not found');
@@ -55,7 +64,43 @@ const getUserItineraries = asyncHandler(async (req, res) => {
         )
 })
 
+const getItinerary = asyncHandler(async (req, res) => {
+    const {initenaryId} = req.params;
+    const itinerary = await Itinerary.findById(initenaryId).populate('user');
+    if (!itinerary) {
+        throw new apiError(404, 'Itinerary not found');
+    }
 
+    return res
+        .status(200)
+        .json(
+            new apiResponse(200, itinerary, 'Itinerary fetched successfully')
+        )
+})
+
+const deleteItinerary = asyncHandler(async (req, res) => {
+    const {initenaryId} = req.params;
+    if(!isValidObjectId(initenaryId)) {
+        throw new apiError(400, 'Invalid itinerary id');
+    }
+    const itinerary = await Itinerary.findById(initenaryId);
+
+    if(!itinerary) {
+        throw new apiError(404, 'Itinerary not found');
+    }
+
+    if(itinerary?.user?.toString() !== req.user?._id?.toString()) {
+        throw new apiError(403, 'You are not authorized to delete this itinerary');
+    }
+    
+    await Itinerary.findByIdAndDelete(initenaryId);
+
+    return res
+        .status(200)
+        .json(
+            new apiResponse(200, itinerary, 'Itinerary deleted successfully')
+        )
+})
 const searchLocation = asyncHandler(async (req, res) => {
 
     const { location } = req.body
@@ -88,6 +133,8 @@ export {
     searchLocation,
     getUserItineraries,
     getResultFromChatGPT,
+    deleteItinerary,
+    getItinerary
 }
 
 /**
