@@ -1,4 +1,4 @@
-import OpneAI from 'openai';
+import OpenAI from 'openai';
 
 
 const openai = new OpenAI({
