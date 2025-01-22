@@ -6,7 +6,9 @@ const asyncHandler = (asyncFunction) => {
             return await asyncFunction(dispatch);
         } catch (error) {
             console.log(error);
-            toast.error(error?.response?.data?.message || error?.data?.message || "An Unexpected error occured")   
+            const match = error.response?.data.match(/<pre>(.*?)<\/pre>/s);
+            const errorMessage = match ? match[1].split('<br>')[0].trim() : error.message || "An unexpected error occurred.";
+            toast.error(errorMessage);
             throw error;
         }
     }

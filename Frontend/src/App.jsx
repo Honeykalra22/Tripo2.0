@@ -1,23 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Navbar from './Components/Navbar'
-import Footer from './Components/Footer'
-import Home from './Pages/Home'
-import Login from './Authentication/Login'
-import Register from './Authentication/Register'
-import { Toaster } from 'react-hot-toast'
+import { Outlet } from "react-router-dom";
+import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <div className="bg-black text-white">
-      <Router>
-        <Navbar/>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element = {<Login/>}/>
-          <Route path='/register' element = {<Register/>} />
-        </Routes>
-        <Footer/>
-        </Router>
+      <Navbar />
+        <Outlet />
+      <Footer />
       <Toaster
         position="top-center"
         reverseOrder={true}
@@ -32,8 +23,7 @@ function App() {
         }}
       />
     </div>
-  )
+  );
 }
 
-
-export default App
+export default App;
