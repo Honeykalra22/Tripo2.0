@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "/plan-trip",
+        path: "/plantrip",
         element: (
           // <AuthStatus authentication={true}> // excluded until backend is completed 
             <Plan_A_Trip/>
