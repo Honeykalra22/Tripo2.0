@@ -10,6 +10,7 @@ import Home from './Pages/Home.jsx'
 import AuthStatus from './Components/AuthStatus.jsx'
 import Login from './Authentication/Login.jsx'
 import Register from './Authentication/Register.jsx'
+import Plan_A_Trip from './Pages/Plan_A_Trip/Plan_A_Trip.jsx'
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
           <AuthStatus authentication={false}>
             <Register/>
           </AuthStatus>
+        )
+      },
+      {
+        path: "/plan-trip",
+        element: (
+          // <AuthStatus authentication={true}> // excluded until backend is completed 
+            <Plan_A_Trip/>
+          // </AuthStatus>
         )
       }
     ]
