@@ -1,6 +1,6 @@
 import React from 'react'
-import { TravelBox } from '../Components/TravelBox'
 import logo from '../../public/logo.png'
+import { PlaceBox } from '../Components/placeBox'
 function Home() {
 
   const mockPlace = [
@@ -18,7 +18,7 @@ function Home() {
       address: "Champ de Mars, 5 Avenue Anatole France, 75007 Paris, France",
       openingTime: "9:00 AM",
       closingTime: "12:00 AM",
-      tags: ["Landmark", "Paris", "Historical"],
+      tags: ["Landmark", "Paris", "Historical","Mast"],
     },
   ]
 
@@ -26,7 +26,7 @@ function Home() {
     <div className='flex flex-wrap gap-10 my-10 justify-center'>
       {
         mockPlace.map((place, index) => (
-          <TravelBox key={index} place={place} />
+          <PlaceBox key={index} place={place} />
         ))
       }
     </div>

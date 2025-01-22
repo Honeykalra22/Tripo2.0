@@ -89,7 +89,7 @@ export const updateAvatar = createAsyncThunk(
         const response = await axiosInstance.post("/user/updateAvatar" ,formData,{
             headers: {
                 "Content-Type": "multipart/form-data",
-              },
+            },
         });
 
         console.log(response.data);
@@ -98,8 +98,18 @@ export const updateAvatar = createAsyncThunk(
     })
 )
 
+export const getResultFromChatGPT = createAsyncThunk(
+    "checklist",
+    asyncHandler(async (data) => {
+        const response = await axiosInstance.post("/itinerary/getResultFromChatGPT", data)
+        console.log(response.data);
+        toast.success('Check List is Updated')
+        return response.data;
+    })
+)
+
 const authSlice = createSlice({
-    initialState, 
+    initialState,
     name: "auth",
     reducers: {},
     extraReducers: (builder) => {
@@ -163,6 +173,13 @@ const authSlice = createSlice({
             state.userdata = action.payload;
         })
         builder.addCase(updateAvatar.rejected, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(getResultFromChatGPT.fulfilled, (state, action) => {
+            state.loading = false;
+            state.userdata = action.payload;
+        })
+        builder.addCase(getResultFromChatGPT.rejected, (state) => {
             state.loading = false;
         })
     }
